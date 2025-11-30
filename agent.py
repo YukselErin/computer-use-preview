@@ -114,6 +114,7 @@ class BrowserAgent:
                 types.Tool(function_declarations=custom_functions),
             ],
         )
+        self._browser_computer.start_recording_session()
 
     def handle_action(self, action: types.FunctionCall) -> FunctionResponseT:
         """Handles the action and returns the environment state."""
@@ -272,6 +273,8 @@ class BrowserAgent:
             self._contents.append(candidate.content)
 
         reasoning = self.get_text(candidate)
+        if reasoning:
+            self._browser_computer.set_current_reasoning(reasoning)
         function_calls = self.extract_function_calls(candidate)
 
         # Retry the request in case of malformed FCs.
@@ -408,6 +411,30 @@ class BrowserAgent:
         status = "CONTINUE"
         while status == "CONTINUE":
             status = self.run_one_iteration()
+
+        # Print and save recorded actions
+        recorded_actions = self._browser_computer.get_recorded_actions()
+        if recorded_actions:
+            import json
+            import time
+            
+            # Print to console
+            print("\n--- Recorded Actions (Kofax RPA Compatible) ---")
+            print(json.dumps(recorded_actions, indent=2, default=str))
+            print("-----------------------------------------------")
+
+            # Save to file
+            recording_dir = self._browser_computer.get_recording_dir()
+            if recording_dir:
+                filename = os.path.join(recording_dir, "actions.json")
+                try:
+                    with open(filename, "w", encoding="utf-8") as f:
+                        json.dump(recorded_actions, f, indent=2, default=str)
+                    print(f"\nRecorded actions saved to: {os.path.abspath(filename)}")
+                except Exception as e:
+                    print(f"\nFailed to save recorded actions to file: {e}")
+            else:
+                 print("No recording directory found.")
 
     def denormalize_x(self, x: int) -> int:
         return int(x / 1000 * self._browser_computer.screen_size()[0])

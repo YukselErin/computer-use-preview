@@ -86,6 +86,24 @@ class PlaywrightComputer(Computer):
         self._screen_size = screen_size
         self._search_engine_url = search_engine_url
         self._highlight_mouse = highlight_mouse
+        self._search_engine_url = search_engine_url
+        self._highlight_mouse = highlight_mouse
+        self.recorded_actions = []
+        self._current_reasoning = ""
+        self._recording_dir = None
+        self._step_index = 0
+
+    def start_recording_session(self):
+        timestamp = time.strftime("%Y%m%d_%H%M%S")
+        self._recording_dir = os.path.join("recordings", f"run_{timestamp}")
+        os.makedirs(self._recording_dir, exist_ok=True)
+        print(f"Started recording session in: {self._recording_dir}")
+
+    def set_current_reasoning(self, reasoning: str):
+        self._current_reasoning = reasoning
+
+    def get_recording_dir(self):
+        return self._recording_dir
 
     def _handle_new_page(self, new_page: playwright.sync_api.Page):
         """The Computer Use model only supports a single tab at the moment.
@@ -147,16 +165,86 @@ class PlaywrightComputer(Computer):
 
         self._playwright.stop()
 
+    def _record_action(self, action_type: str, x: int, y: int, **kwargs):
+        """Records an action and the DOM element at the given coordinates."""
+        try:
+            # Execute JavaScript to find the element and extract its details
+            element_info = self._page.evaluate(
+                """
+                ([x, y]) => {
+                    const element = document.elementFromPoint(x, y);
+                    if (!element) return null;
+
+                    const attributes = {};
+                    for (const attr of element.attributes) {
+                        attributes[attr.name] = attr.value;
+                    }
+
+                    return {
+                        tagName: element.tagName,
+                        id: element.id,
+                        className: element.className,
+                        name: element.getAttribute('name'),
+                        innerText: element.innerText ? element.innerText.substring(0, 50) : '', // Truncate for brevity
+                        attributes: attributes,
+                        xpath: '' // Placeholder, could implement full XPath generation if needed
+                    };
+                }
+                """,
+                [x, y]
+            )
+
+            screenshot_filename = None
+            dom_filename = None
+
+            if self._recording_dir:
+                # Save screenshot
+                screenshot_filename = f"screenshot_{self._step_index}.png"
+                screenshot_path = os.path.join(self._recording_dir, screenshot_filename)
+                self._page.screenshot(path=screenshot_path)
+
+                # Save DOM
+                dom_filename = f"dom_{self._step_index}.html"
+                dom_path = os.path.join(self._recording_dir, dom_filename)
+                with open(dom_path, "w", encoding="utf-8") as f:
+                    f.write(self._page.content())
+
+            if element_info:
+                record = {
+                    "step_index": self._step_index,
+                    "action": action_type,
+                    "x": x,
+                    "y": y,
+                    "timestamp": time.time(),
+                    "reasoning": self._current_reasoning,
+                    "screenshot_file": screenshot_filename,
+                    "dom_file": dom_filename,
+                    "selector": element_info,
+                    **kwargs
+                }
+                self.recorded_actions.append(record)
+            
+            self._step_index += 1
+
+        except Exception as e:
+            print(f"Failed to record action: {e}")
+
+    def get_recorded_actions(self):
+        """Returns the list of recorded actions."""
+        return self.recorded_actions
+
     def open_web_browser(self) -> EnvState:
         return self.current_state()
 
     def click_at(self, x: int, y: int):
+        self._record_action("click", x, y)
         self.highlight_mouse(x, y)
         self._page.mouse.click(x, y)
         self._page.wait_for_load_state()
         return self.current_state()
 
     def hover_at(self, x: int, y: int):
+        self._record_action("hover", x, y)
         self.highlight_mouse(x, y)
         self._page.mouse.move(x, y)
         self._page.wait_for_load_state()
@@ -170,6 +258,7 @@ class PlaywrightComputer(Computer):
         press_enter: bool = False,
         clear_before_typing: bool = True,
     ) -> EnvState:
+        self._record_action("type", x, y, text=text)
         self.highlight_mouse(x, y)
         self._page.mouse.click(x, y)
         self._page.wait_for_load_state()

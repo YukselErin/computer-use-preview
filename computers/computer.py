@@ -123,3 +123,15 @@ class Computer(abc.ABC):
     @abc.abstractmethod
     def current_state(self) -> EnvState:
         """Returns the current state of the current webpage."""
+
+    def get_recorded_actions(self) -> list[dict]:
+        """Returns the list of recorded actions. Defaults to empty list."""
+        return []
+
+    def set_current_reasoning(self, reasoning: str):
+        """Sets the current reasoning of the agent. Defaults to no-op."""
+        pass
+
+    def start_recording_session(self):
+        """Starts a new recording session. Defaults to no-op."""
+        pass

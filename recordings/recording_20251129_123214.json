@@ -1,0 +1,94 @@
+[
+  {
+    "action": "click",
+    "x": 1175,
+    "y": 792,
+    "timestamp": 1764408692.29211,
+    "selector": {
+      "tagName": "DIV",
+      "id": "",
+      "className": "niO4u VDgVie SlP8xc",
+      "name": null,
+      "innerText": "\u0130lgilenmiyorum",
+      "attributes": {
+        "class": "niO4u VDgVie SlP8xc"
+      },
+      "xpath": ""
+    }
+  },
+  {
+    "action": "type",
+    "x": 718,
+    "y": 400,
+    "timestamp": 1764408698.2818027,
+    "selector": {
+      "tagName": "TEXTAREA",
+      "id": "APjFqb",
+      "className": "gLFyf",
+      "name": "q",
+      "innerText": "",
+      "attributes": {
+        "jsname": "yZiJbe",
+        "class": "gLFyf",
+        "aria-controls": "Alh6id",
+        "aria-owns": "Alh6id",
+        "autofocus": "",
+        "title": "Ara",
+        "value": "",
+        "aria-label": "Ara",
+        "placeholder": "",
+        "aria-autocomplete": "both",
+        "aria-expanded": "false",
+        "aria-haspopup": "false",
+        "autocapitalize": "off",
+        "autocomplete": "off",
+        "autocorrect": "off",
+        "id": "APjFqb",
+        "maxlength": "2048",
+        "name": "q",
+        "role": "combobox",
+        "rows": "1",
+        "spellcheck": "false",
+        "data-ved": "0ahUKEwit-pnGhpeRAxWGRPEDHQUbKKIQ39UDCAM",
+        "style": ""
+      },
+      "xpath": ""
+    },
+    "text": "Hello World"
+  },
+  {
+    "action": "click",
+    "x": 175,
+    "y": 100,
+    "timestamp": 1764408721.8394892,
+    "selector": {
+      "tagName": "DIV",
+      "id": "",
+      "className": "YNk70c iFBYke",
+      "name": null,
+      "innerText": "Filtreler ve Konular\nT\u00fcm\u00fc\nG\u00f6rseller\nVideolar\nK\u0131sa ",
+      "attributes": {
+        "class": "YNk70c iFBYke"
+      },
+      "xpath": ""
+    }
+  },
+  {
+    "action": "click",
+    "x": 1198,
+    "y": 222,
+    "timestamp": 1764408728.758734,
+    "selector": {
+      "tagName": "A",
+      "id": "",
+      "className": "",
+      "name": null,
+      "innerText": "Change to English",
+      "attributes": {
+        "style": "display:inline-block;line-height:18px;margin-top:8px;padding:0;font-size:13px",
+        "href": "/setprefs?sig=0_hLXfQC1ltL4mi0_2fiJjee5g64E%3D&source=en_ignored_notification&prev=https://www.google.com/search?q%3DHello%2BWorld%26sca_esv%3D8d685922508c4191%26source%3Dhp%26ei%3Dar0qaa2dL4aJxc8PhbagkQo%26iflsig%3DAOw8s4IAAAAAaSrLeumX2mmP9toJ97JxgwjElvfjXx1y%26ved%3D0ahUKEwit-pnGhpeRAxWGRPEDHQUbKKIQ4dUDCA0%26uact%3D5%26oq%3DHello%2BWorld%26gs_lp%3DEgdnd3Mtd2l6IgtIZWxsbyBXb3JsZDIKEAAYAxjqAhiPATIKEAAYAxjqAhiPATIKEAAYAxjqAhiPATIKEAAYAxjqAhiPATIKEAAYAxjqAhiPATIKEC4YAxjqAhiPATIKEAAYAxjqAhiPATIKEAAYAxjqAhiPATIKEAAYAxjqAhiPATIKEC4YAxjqAhiPAUjDCVCcCVi-CXABeACQAQCYAQCgAQCqAQC4AQPIAQD4AQGYAgGgAgSoAgqYAwTxBe0TkJsmMhwIkgcBMaAHALIHALgHAMIHAzItMcgHAw%26sclient%3Dgws-wiz%26sei%3DfL0qaeXxDb6Oxc8Pvubg8QI&hl=en&sa=X&ved=2ahUKEwjX4p7VhpeRAxXUBtsEHQ77BLYQhoQCKAF6BAgXEAQ"
+      },
+      "xpath": ""
+    }
+  }
+]
